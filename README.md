@@ -6,4 +6,5 @@ foundation in C, C++, and Java programming complements my practical experience i
 me to create innovative solutions. I excel in improving user experience, website speed, and adhering to industry
 web design standards. Proficient in Laravel, PHP, React.js, WordPress, and JavaScript, I am dedicated to ongoing
 professional growth and have achieved commendable rankings on respected coding platforms.
+<br>
 Code chef --> 3🌟, Hacker Rank --> CPP 5🌟, Problem-solving 3🌟
