@@ -1,4 +1,4 @@
-# portfolio
+# Portfolio
  Aman
 As a Developer with expertise in web-based applications, Specialize in PHP Laravel development. I have
 expanded my skills to include technologies like React.js, Node.js, Moodle, and Tailwind CSS. My academic
