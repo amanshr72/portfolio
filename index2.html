@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aman Sharma — Backend Engineer (SDE-2)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --border: #1e1e1e;
+    --accent: #00ff88;
+    --accent2: #0af;
+    --text: #e8e8e8;
+    --muted: #666;
+    --tag-bg: #161616;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: .4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%;
+    padding: 20px 60px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: -0.03em;
+    color: var(--text);
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex; gap: 40px; list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 60px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid-line {
+    position: absolute;
+    background: var(--border);
+    opacity: 0.5;
+  }
+
+  .hero-grid-line.v { width: 1px; height: 100%; top: 0; }
+  .hero-grid-line.h { height: 1px; width: 100%; left: 0; }
+  .hero-grid-line:nth-child(1) { left: 33.3%; }
+  .hero-grid-line:nth-child(2) { left: 66.6%; }
+  .hero-grid-line:nth-child(3) { top: 50%; }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.1s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.2s forwards;
+  }
+
+  .hero-name .line2 { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 48px;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.35s forwards;
+  }
+
+  .hero-ctas {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.5s forwards;
+  }
+
+  .btn-primary {
+    padding: 14px 32px;
+    background: var(--accent);
+    color: #000;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,255,136,0.25);
+  }
+
+  .btn-ghost {
+    padding: 13px 32px;
+    background: transparent;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hero-metrics {
+    position: absolute; right: 60px; bottom: 80px;
+    display: flex; flex-direction: column; gap: 32px;
+    opacity: 0;
+    animation: fadeIn 1s 0.8s forwards;
+  }
+
+  .metric-item {
+    text-align: right;
+    border-right: 2px solid var(--accent);
+    padding-right: 20px;
+  }
+
+  .metric-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .metric-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* SECTIONS */
+  section { padding: 100px 60px; border-top: 1px solid var(--border); }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 60px;
+    line-height: 1.1;
+  }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px;
+    border: 1px solid var(--border);
+  }
+
+  .skill-block {
+    padding: 32px 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+
+  .skill-block:hover { background: #151515; }
+
+  .skill-block-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .skill-block p {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .skill-block p strong {
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  /* EXPERIENCE */
+  .exp-list { display: flex; flex-direction: column; gap: 2px; }
+
+  .exp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 40px 44px;
+    transition: border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .exp-card::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    transform: scaleY(0);
+    transition: transform 0.3s;
+    transform-origin: bottom;
+  }
+
+  .exp-card:hover::before { transform: scaleY(1); }
+  .exp-card:hover { border-color: #2a2a2a; }
+
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .exp-role {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .exp-company {
+    font-size: 0.88rem;
+    color: var(--accent2);
+    margin-top: 4px;
+    font-weight: 400;
+  }
+
+  .exp-period {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    padding-top: 4px;
+  }
+
+  .exp-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .exp-bullets li {
+    font-size: 0.9rem;
+    color: #b0b0b0;
+    padding-left: 18px;
+    position: relative;
+  }
+
+  .exp-bullets li::before {
+    content: '→';
+    position: absolute; left: 0;
+    color: var(--accent);
+    font-size: 0.75rem;
+    top: 2px;
+  }
+
+  .exp-bullets li strong { color: var(--text); font-weight: 500; }
+
+  .exp-links {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    margin-top: 20px;
+  }
+
+  .exp-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    border: 1px solid rgba(0,255,136,0.2);
+    padding: 5px 12px;
+    transition: background 0.2s;
+  }
+
+  .exp-link:hover { background: rgba(0,255,136,0.08); }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2px;
+  }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: border-color 0.25s, transform 0.25s;
+  }
+
+  .project-card:hover {
+    border-color: #333;
+    transform: translateY(-3px);
+  }
+
+  .project-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .project-icon {
+    width: 36px; height: 36px;
+    background: rgba(0,255,136,0.08);
+    border: 1px solid rgba(0,255,136,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+  }
+
+  .project-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-top: 16px;
+  }
+
+  .project-desc {
+    font-size: 0.87rem;
+    color: var(--muted);
+    line-height: 1.65;
+    flex: 1;
+  }
+
+  .project-tags {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--muted);
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    padding: 3px 8px;
+    letter-spacing: 0.06em;
+  }
+
+  .project-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap 0.2s;
+  }
+
+  .project-link:hover { gap: 10px; }
+
+  /* ACHIEVEMENTS */
+  .achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .achievement-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 40px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .achievement-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .achievement-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .achievement-title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .achievement-desc {
+    font-size: 0.83rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* CONTACT */
+  #contact {
+    text-align: center;
+    padding: 100px 60px;
+  }
+
+  .contact-email {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: -0.03em;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 4px;
+    transition: color 0.2s;
+  }
+
+  .contact-email:hover { color: var(--accent); }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 40px;
+  }
+
+  .contact-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .contact-links a:hover { color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    padding: 24px 60px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  .footer-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    #hero, section { padding-left: 24px; padding-right: 24px; }
+    .hero-metrics { position: static; flex-direction: row; flex-wrap: wrap; gap: 24px; margin-top: 48px; }
+    .metric-item { text-align: left; border-right: none; border-left: 2px solid var(--accent); padding-left: 16px; padding-right: 0; }
+    .achievements-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+    .exp-card { padding: 28px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">AS<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-line v"></div>
+  <div class="hero-grid-line v" style="left:66.6%"></div>
+  <div class="hero-grid-line h" style="top:50%"></div>
+
+  <div class="hero-tag">Available for SDE-2 Roles · Delhi, India</div>
+  <h1 class="hero-name">
+    Aman<br>
+    <span class="line2">Sharma.</span>
+  </h1>
+  <p class="hero-sub">
+    Backend Engineer building scalable Node.js microservices, distributed systems, and payment infrastructure. 3+ years shipping production systems at scale.
+  </p>
+  <div class="hero-ctas">
+    <a href="mailto:amansh2786@gmail.com" class="btn-primary">Get in Touch</a>
+    <a href="https://github.com/amanshr72" target="_blank" class="btn-ghost">GitHub ↗</a>
+    <a href="https://linkedin.com/in/aman-sharma-3524a91a6" target="_blank" class="btn-ghost">LinkedIn ↗</a>
+  </div>
+
+  <div class="hero-metrics">
+    <div class="metric-item">
+      <div class="metric-num">3+</div>
+      <div class="metric-label">Years Backend</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-num">−60%</div>
+      <div class="metric-label">API Latency Cut</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-num">5K+</div>
+      <div class="metric-label">Zero-dup Txns</div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">// 01 — Technical Stack</div>
+  <h2 class="section-title">What I Build With</h2>
+
+  <div class="skills-grid reveal">
+    <div class="skill-block">
+      <div class="skill-block-title">Languages</div>
+      <p><strong>JavaScript / TypeScript</strong> · <strong>Golang</strong> · PHP · C++ · Python</p>
+    </div>
+    <div class="skill-block">
+      <div class="skill-block-title">Backend & Runtime</div>
+      <p><strong>Node.js</strong> · Express.js · REST APIs · BullMQ · <strong>RabbitMQ</strong> · WebSocket</p>
+    </div>
+    <div class="skill-block">
+      <div class="skill-block-title">Architecture</div>
+      <p><strong>Microservices</strong> · Event-Driven · Multi-tenant SaaS · RBAC · Rate Limiting · Schema Design</p>
+    </div>
+    <div class="skill-block">
+      <div class="skill-block-title">Databases</div>
+      <p><strong>MySQL</strong> · <strong>MongoDB</strong> · Redis — caching, rate limiting, queues</p>
+    </div>
+    <div class="skill-block">
+      <div class="skill-block-title">Cloud & DevOps</div>
+      <p><strong>AWS</strong> (EC2, S3, RDS, CloudFront, SQS) · Docker · CI/CD · Nginx · Linux</p>
+    </div>
+    <div class="skill-block">
+      <div class="skill-block-title">Payments & Infra</div>
+      <p><strong>Stripe</strong> · Razorpay · PayPal · Webhooks · Idempotency · Auto-debit</p>
+    </div>
+    <div class="skill-block">
+      <div class="skill-block-title">CS Fundamentals</div>
+      <p>LLD · HLD · System Design · OOP · SOLID · DSA</p>
+    </div>
+    <div class="skill-block">
+      <div class="skill-block-title">Learning</div>
+      <p>Kubernetes · Kafka · Golang for high-perf services</p>
+    </div>
+  </div>
+</section>
+
+<!-- KEY ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="section-label">// 02 — Impact Numbers</div>
+  <h2 class="section-title">By the Numbers</h2>
+
+  <div class="achievements-grid reveal">
+    <div class="achievement-card">
+      <div class="achievement-num">−60%</div>
+      <div class="achievement-title">API Latency Reduction</div>
+      <div class="achievement-desc">Cut p99 latency from 2.1s → ~400ms via Laravel monolith → Node.js microservice migration with hot-path optimization.</div>
+    </div>
+    <div class="achievement-card">
+      <div class="achievement-num">5K+</div>
+      <div class="achievement-title">Zero Duplicate Charges</div>
+      <div class="achievement-desc">Engineered idempotent Stripe / Razorpay / PayPal workflows handling 5,000+ transactions in production with zero duplicate charges.</div>
+    </div>
+    <div class="achievement-card">
+      <div class="achievement-num">100+</div>
+      <div class="achievement-title">Tenants on SaaS LMS</div>
+      <div class="achievement-desc">Architected zero-leak multi-tenant SaaS LMS with subdomain routing, RBAC, subscription lifecycle, and CloudFront-S3 CDN integration.</div>
+    </div>
+    <div class="achievement-card">
+      <div class="achievement-num">−35%</div>
+      <div class="achievement-title">Query Latency via Indexing</div>
+      <div class="achievement-desc">Optimized DB schema with composite indexing on 100K+ record datasets, improving throughput by 60%.</div>
+    </div>
+    <div class="achievement-card">
+      <div class="achievement-num">1M+</div>
+      <div class="achievement-title">Monthly Asset Requests</div>
+      <div class="achievement-desc">Deployed AWS S3 + CloudFront CDN pipeline, cutting image load times by 50% serving 1M+ monthly requests reliably.</div>
+    </div>
+    <div class="achievement-card">
+      <div class="achievement-num">&lt;200ms</div>
+      <div class="achievement-title">Real-time via WebSocket</div>
+      <div class="achievement-desc">Replaced polling with WebSocket for live task boards — reducing server load and syncing operational data across users under 200ms.</div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">// 03 — Work Experience</div>
+  <h2 class="section-title">Where I've Built</h2>
+
+  <div class="exp-list reveal">
+
+    <!-- VJV -->
+    <div class="exp-card">
+      <div class="exp-header">
+        <div>
+          <div class="exp-role">Software Developer</div>
+          <div class="exp-company">VJV IT Solutions · Remote</div>
+        </div>
+        <div class="exp-period">Mar 2025 – Present</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Architected <strong>multi-tenant SaaS LMS</strong> serving 100+ organizations — tenant isolation, RBAC, subscription lifecycle, subdomain-based routing.</li>
+        <li>Built matchmaking platform <strong>(JivaSync)</strong> backend — profile management, advanced search/filtering, event-driven notifications.</li>
+        <li>Implemented payment infrastructure (Stripe, PayPal, Razorpay) with auto-renewals, idempotent retry-safe transitions — <strong>5K+ transactions, 0 duplicate charges.</strong></li>
+        <li>Optimized DB schema + composite indexing on 100K+ records — <strong>35% latency reduction, 60% throughput improvement.</strong></li>
+        <li>Redis caching, rate limiting, async job queues enabling bulk 10K+ imports without blocking user traffic.</li>
+        <li>AWS S3 + CloudFront CDN — <strong>50% image load time reduction, 1M+ monthly asset requests</strong> served reliably.</li>
+      </ul>
+      <div class="exp-links">
+        <a href="https://yuvaquest.com" target="_blank" class="exp-link">↗ Yuva Quest</a>
+        <a href="https://jivasync.com" target="_blank" class="exp-link">↗ JivaSync</a>
+      </div>
+    </div>
+
+    <!-- SET -->
+    <div class="exp-card">
+      <div class="exp-header">
+        <div>
+          <div class="exp-role">Software Developer</div>
+          <div class="exp-company">Shunya Ekai Technologies Pvt. Ltd.</div>
+        </div>
+        <div class="exp-period">Aug 2024 – Feb 2025</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Migrated <strong>Plus-X from Laravel monolith → Node.js microservices</strong>, reducing API latency by 60% (2.1s → ~400ms).</li>
+        <li>Built admin panel handling <strong>10K+ daily operations</strong> with role-based access control (RBAC) for multiple user types.</li>
+        <li>Designed versioned REST APIs — auth, validation, pagination, RBAC — serving external clients with <strong>99% uptime.</strong></li>
+        <li>Integrated Stripe auto-debit, webhook-driven state updates, secure card handling — <strong>zero missed state transitions</strong> in production.</li>
+        <li>Improved MySQL performance via query refactoring + indexing — <strong>40% DB throughput improvement.</strong></li>
+      </ul>
+      <div class="exp-links">
+        <a href="https://ridezapp.com" target="_blank" class="exp-link">↗ Ridez</a>
+        <a href="https://plusxelectric.com" target="_blank" class="exp-link">↗ PlusX</a>
+        <a href="https://ipfstartuphub.com" target="_blank" class="exp-link">↗ IPF Startup Hub</a>
+        <a href="https://ipfyuva.com" target="_blank" class="exp-link">↗ IPF Yuva</a>
+      </div>
+    </div>
+
+    <!-- Market 99 -->
+    <div class="exp-card">
+      <div class="exp-header">
+        <div>
+          <div class="exp-role">Backend Engineer</div>
+          <div class="exp-company">Market 99 Pvt. Ltd.</div>
+        </div>
+        <div class="exp-period">Feb 2024 – Jul 2024</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Designed and developed backend services for internal ticket management & <strong>Warehouse Management System (WMS).</strong></li>
+        <li>Built scalable REST APIs for inventory, order tracking, user roles, and reporting modules.</li>
+        <li>Replaced polling with <strong>WebSocket</strong>, reducing server load and latency to <strong>&lt;200ms</strong> for live task board synchronization.</li>
+        <li>Integrated third-party APIs (logistics, notifications, auth) with async workflows.</li>
+        <li>Implemented RBAC and modular service layers for improved maintainability under peak transactional load.</li>
+      </ul>
+    </div>
+
+    <!-- Radiant -->
+    <div class="exp-card">
+      <div class="exp-header">
+        <div>
+          <div class="exp-role">Backend Engineer</div>
+          <div class="exp-company">Radiant Infonet Pvt. Ltd.</div>
+        </div>
+        <div class="exp-period">Nov 2022 – Feb 2024</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Built and maintained <strong>B2B e-commerce (Navbazar)</strong> backend supporting thousands of SKUs and multi-vendor workflows.</li>
+        <li>Designed auth, product catalog, order lifecycle, payments, dashboards, and reporting from scratch.</li>
+        <li>Improved DB performance via normalization, compound indexing, and N+1 query elimination for <strong>high-volume read/write traffic.</strong></li>
+        <li>Maintained assessment portal with advanced filtering and reporting capabilities.</li>
+      </ul>
+      <div class="exp-links">
+        <a href="https://navbazar.in" target="_blank" class="exp-link">↗ Navbazar</a>
+        <a href="https://nefarmhub.com" target="_blank" class="exp-link">↗ NeFarmHub</a>
+        <a href="#" class="exp-link">↗ SkillAssessment</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">// 04 — Key Projects</div>
+  <h2 class="section-title">Things I've Built</h2>
+
+  <div class="projects-grid reveal">
+
+    <div class="project-card">
+      <div class="project-card-top">
+        <div class="project-icon">⚙</div>
+      </div>
+      <div class="project-name">Auth Service</div>
+      <div class="project-desc">Production-grade auth service with JWT, refresh token rotation, RBAC, rate limiting, and middleware-based architecture. Built in both Node.js and Golang.</div>
+      <div class="project-tags">
+        <span class="tag">Node.js</span>
+        <span class="tag">Golang</span>
+        <span class="tag">JWT</span>
+        <span class="tag">Redis</span>
+        <span class="tag">RBAC</span>
+      </div>
+      <a href="https://github.com/amanshr72" target="_blank" class="project-link">View on GitHub →</a>
+    </div>
+
+    <div class="project-card">
+      <div class="project-card-top">
+        <div class="project-icon">💳</div>
+      </div>
+      <div class="project-name">Payment Service</div>
+      <div class="project-desc">Idempotent payment service handling Stripe auto-debit, PayPal, Razorpay — with webhook processing, failure handling, and zero duplicate charge guarantee.</div>
+      <div class="project-tags">
+        <span class="tag">Stripe</span>
+        <span class="tag">Razorpay</span>
+        <span class="tag">Webhooks</span>
+        <span class="tag">Idempotency</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-card-top">
+        <div class="project-icon">🏗</div>
+      </div>
+      <div class="project-name">Multi-Tenant SaaS LMS</div>
+      <div class="project-desc">Zero-leak multi-tenant LMS — tenant isolation, subdomain routing, RBAC, subscription lifecycle, multi-language support, CloudFront-S3 CDN. Serving 100+ orgs.</div>
+      <div class="project-tags">
+        <span class="tag">Node.js</span>
+        <span class="tag">MySQL</span>
+        <span class="tag">Redis</span>
+        <span class="tag">AWS S3</span>
+        <span class="tag">CloudFront</span>
+      </div>
+      <a href="https://yuvaquest.com" target="_blank" class="project-link">Live Project →</a>
+    </div>
+
+    <div class="project-card">
+      <div class="project-card-top">
+        <div class="project-icon">🛒</div>
+      </div>
+      <div class="project-name">B2B E-commerce Platform</div>
+      <div class="project-desc">Full backend for Navbazar — multi-vendor workflows, thousands of SKUs, order lifecycle, compound indexing, N+1 elimination for high read/write traffic.</div>
+      <div class="project-tags">
+        <span class="tag">PHP/Laravel</span>
+        <span class="tag">MySQL</span>
+        <span class="tag">REST APIs</span>
+        <span class="tag">Multi-vendor</span>
+      </div>
+      <a href="https://navbazar.in" target="_blank" class="project-link">Live Project →</a>
+    </div>
+
+    <div class="project-card">
+      <div class="project-card-top">
+        <div class="project-icon">🔗</div>
+      </div>
+      <div class="project-name">Matchmaking Platform — JivaSync</div>
+      <div class="project-desc">Backend for JivaSync — profile management, advanced search/filtering with composite indexes, event-driven notifications for matches and messages.</div>
+      <div class="project-tags">
+        <span class="tag">Node.js</span>
+        <span class="tag">BullMQ</span>
+        <span class="tag">MongoDB</span>
+        <span class="tag">Redis</span>
+      </div>
+      <a href="https://jivasync.com" target="_blank" class="project-link">Live Project →</a>
+    </div>
+
+    <div class="project-card">
+      <div class="project-card-top">
+        <div class="project-icon">🦫</div>
+      </div>
+      <div class="project-name">Go REST Service</div>
+      <div class="project-desc">High-performance Golang REST service with JWT auth, middleware chain, PostgreSQL integration, and Docker deployment. Exploring Go for compute-intensive workloads.</div>
+      <div class="project-tags">
+        <span class="tag">Golang</span>
+        <span class="tag">PostgreSQL</span>
+        <span class="tag">Docker</span>
+        <span class="tag">JWT</span>
+      </div>
+      <a href="https://github.com/amanshr72" target="_blank" class="project-link">View on GitHub →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="border-bottom: 1px solid var(--border);">
+  <div class="section-label reveal" style="margin-bottom: 20px;">// 05 — Let's Connect</div>
+  <p class="reveal" style="color: var(--muted); font-size: 0.9rem; margin-bottom: 32px;">Open to SDE-2 / Backend Engineer roles. Let's talk.</p>
+  <a href="mailto:amansh2786@gmail.com" class="contact-email reveal">amansh2786@gmail.com</a>
+  <div class="contact-links reveal">
+    <a href="https://github.com/amanshr72" target="_blank">GitHub</a>
+    <a href="https://linkedin.com/in/aman-sharma-3524a91a6" target="_blank">LinkedIn</a>
+    <a href="tel:+917772022415">+91 7772022415</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Aman Sharma · Built for GitHub Pages</p>
+  <div class="footer-status">
+    <div class="status-dot"></div>
+    <p style="font-size:0.65rem; letter-spacing:0.08em;">Open to Work</p>
+  </div>
+</footer>
+
+<script>
+  // Intersection Observer for reveal animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
