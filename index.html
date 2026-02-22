@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Aman Sharma · Backend Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ── Reset & Tokens ─────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+
+:root{
+  --bg:        #0d0d0d;
+  --bg1:       #111111;
+  --bg2:       #161616;
+  --line:      #1f1f1f;
+  --line2:     #2a2a2a;
+  --line3:     #333333;
+  --muted:     #555555;
+  --sub:       #888888;
+  --body:      #b8b8b8;
+  --head:      #efefef;
+  --white:     #f8f8f8;
+  --accent:    #e8e8e8;   /* near-white — linear's surgical precision */
+  --blue:      #3b82f6;   /* single pop of color, used sparingly */
+  --blue-dim:  rgba(59,130,246,.12);
+  --serif:     'Instrument Serif', Georgia, serif;
+  --sans:      'Geist', system-ui, sans-serif;
+  --mono:      'Geist Mono', 'Courier New', monospace;
+  --r:         4px;
+  --max:       920px;
+}
+
+body{
+  background:var(--bg);
+  color:var(--body);
+  font-family:var(--sans);
+  font-size:14px;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+
+/* ── Subtle grid lines ──────────────────────────── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(var(--line) 1px,transparent 1px),
+    linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:80px 80px;
+  pointer-events:none;z-index:0;opacity:.3;
+}
+
+.wrap{
+  max-width:var(--max);
+  margin:0 auto;
+  padding:0 32px;
+  position:relative;z-index:1;
+}
+
+/* ── Nav ────────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;
+  z-index:100;
+  background:rgba(13,13,13,.85);
+  backdrop-filter:blur(20px) saturate(1.5);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  max-width:var(--max);
+  margin:0 auto;padding:0 32px;
+  height:52px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{
+  font-family:var(--mono);
+  font-size:13px;font-weight:500;
+  color:var(--head);text-decoration:none;
+  letter-spacing:-.3px;
+}
+.nav-logo span{color:var(--muted)}
+.nav-links{
+  display:flex;gap:0;list-style:none;
+}
+.nav-links a{
+  color:var(--muted);text-decoration:none;
+  font-size:12px;padding:6px 14px;
+  border-radius:var(--r);
+  transition:color .15s,background .15s;
+}
+.nav-links a:hover{color:var(--head);background:var(--bg2)}
+.nav-loc{
+  font-family:var(--mono);font-size:11px;
+  color:var(--muted);letter-spacing:.02em;
+}
+
+/* ── Hero ───────────────────────────────────────── */
+#hero{
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding-top:52px;
+  border-bottom:1px solid var(--line);
+}
+.hero-inner{
+  width:100%;
+  padding:100px 0 80px;
+  display:grid;
+  grid-template-columns:1fr 320px;
+  gap:80px;
+  align-items:end;
+}
+.hero-label{
+  font-family:var(--mono);
+  font-size:11px;color:var(--muted);
+  letter-spacing:.08em;text-transform:uppercase;
+  margin-bottom:28px;
+  display:flex;align-items:center;gap:8px;
+}
+.hero-label::before{
+  content:'';width:16px;height:1px;
+  background:var(--muted);
+}
+.hero-name{
+  font-family:var(--serif);
+  font-size:clamp(52px,7vw,88px);
+  font-weight:400;
+  color:var(--white);
+  line-height:.95;
+  letter-spacing:-1px;
+  margin-bottom:12px;
+}
+.hero-name em{
+  font-style:italic;
+  color:var(--sub);
+}
+.hero-role{
+  font-family:var(--sans);
+  font-size:14px;font-weight:400;
+  color:var(--sub);
+  margin-bottom:36px;
+  line-height:1.5;
+}
+.hero-role strong{color:var(--body);font-weight:500}
+
+.hero-bio{
+  font-size:15px;line-height:1.75;
+  color:var(--sub);
+  max-width:520px;
+  margin-bottom:40px;
+}
+.hero-bio strong{color:var(--head);font-weight:500}
+
+.hero-actions{display:flex;gap:10px;align-items:center;}
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 16px;border-radius:var(--r);
+  font-family:var(--sans);font-size:13px;font-weight:500;
+  text-decoration:none;transition:all .15s;
+  border:1px solid transparent;
+}
+.btn-primary{
+  background:var(--white);color:#0d0d0d;
+  border-color:var(--white);
+}
+.btn-primary:hover{background:#e0e0e0;border-color:#e0e0e0}
+.btn-ghost{
+  background:transparent;color:var(--sub);
+  border-color:var(--line3);
+}
+.btn-ghost:hover{color:var(--head);border-color:var(--line3);background:var(--bg2)}
+
+/* Hero right — stat card */
+.hero-stats{
+  display:flex;flex-direction:column;gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  overflow:hidden;
+  align-self:center;
+}
+.hstat{
+  background:var(--bg1);
+  padding:18px 20px;
+  display:flex;flex-direction:column;gap:2px;
+  transition:background .15s;
+}
+.hstat:hover{background:var(--bg2)}
+.hstat-num{
+  font-family:var(--mono);
+  font-size:22px;font-weight:600;
+  color:var(--white);line-height:1;
+}
+.hstat-label{
+  font-size:11px;color:var(--muted);
+  letter-spacing:.03em;line-height:1.4;
+}
+
+/* ── Sections ───────────────────────────────────── */
+section{
+  padding:80px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.sec-header{
+  display:grid;
+  grid-template-columns:160px 1fr;
+  gap:40px;
+  margin-bottom:48px;
+  padding-bottom:24px;
+  border-bottom:1px solid var(--line);
+}
+.sec-label{
+  font-family:var(--mono);font-size:11px;
+  color:var(--muted);letter-spacing:.08em;
+  text-transform:uppercase;
+  padding-top:4px;
+}
+.sec-title{
+  font-family:var(--serif);
+  font-size:32px;font-weight:400;
+  color:var(--head);line-height:1;
+  letter-spacing:-.3px;
+}
+.sec-title em{font-style:italic;color:var(--sub)}
+
+/* ── Experience ─────────────────────────────────── */
+.exp-item{
+  display:grid;
+  grid-template-columns:160px 1fr;
+  gap:40px;
+  padding:32px 0;
+  border-bottom:1px solid var(--line);
+  position:relative;
+}
+.exp-item:last-child{border-bottom:none}
+
+.exp-meta{padding-top:2px}
+.exp-dates{
+  font-family:var(--mono);font-size:11px;
+  color:var(--muted);letter-spacing:.02em;
+  margin-bottom:6px;line-height:1.4;
+}
+.exp-co{
+  font-size:12px;font-weight:500;
+  color:var(--sub);margin-bottom:4px;
+}
+.exp-badge{
+  display:inline-block;font-family:var(--mono);
+  font-size:10px;color:var(--muted);
+  background:var(--bg2);border:1px solid var(--line2);
+  border-radius:3px;padding:1px 6px;
+  letter-spacing:.04em;
+}
+
+.exp-body{}
+.exp-role{
+  font-size:15px;font-weight:500;
+  color:var(--head);margin-bottom:14px;
+  line-height:1.3;
+}
+.exp-points{
+  list-style:none;display:flex;flex-direction:column;gap:6px;
+}
+.exp-points li{
+  font-size:13px;color:var(--sub);
+  padding-left:16px;position:relative;
+  line-height:1.6;
+}
+.exp-points li::before{
+  content:'·';position:absolute;left:2px;
+  color:var(--line3);font-size:16px;line-height:1.4;
+}
+.exp-links{
+  display:flex;gap:6px;flex-wrap:wrap;margin-top:16px;
+}
+.elink{
+  font-family:var(--mono);font-size:11px;
+  color:var(--muted);text-decoration:none;
+  border:1px solid var(--line2);border-radius:3px;
+  padding:2px 8px;letter-spacing:.02em;
+  transition:all .15s;
+  display:inline-flex;align-items:center;gap:4px;
+}
+.elink::after{content:'↗';font-size:9px;opacity:.5}
+.elink:hover{color:var(--head);border-color:var(--line3);background:var(--bg2)}
+
+/* ── Projects ───────────────────────────────────── */
+.proj-subsection{margin-bottom:40px}
+.proj-sublabel{
+  font-family:var(--mono);font-size:10px;
+  color:var(--muted);letter-spacing:.1em;text-transform:uppercase;
+  padding-bottom:16px;margin-bottom:0;
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:10px;
+}
+.proj-sublabel::before{
+  content:'';width:12px;height:1px;background:var(--muted);
+}
+
+.proj-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  overflow:hidden;
+  margin-top:0;
+}
+.proj-card{
+  background:var(--bg1);
+  padding:24px;
+  display:flex;flex-direction:column;
+  transition:background .15s;
+  position:relative;
+}
+.proj-card:hover{background:var(--bg2)}
+.proj-card-top{
+  display:flex;justify-content:space-between;
+  align-items:flex-start;margin-bottom:12px;
+}
+.proj-name{
+  font-size:13px;font-weight:500;
+  color:var(--head);line-height:1.3;
+}
+.proj-status{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:.06em;text-transform:uppercase;
+  padding:1px 7px;border-radius:3px;
+  flex-shrink:0;
+}
+.ps-live{color:var(--blue);background:var(--blue-dim);border:1px solid rgba(59,130,246,.2)}
+.ps-ship{color:var(--sub);background:var(--bg2);border:1px solid var(--line2)}
+.ps-wip {color:var(--muted);background:transparent;border:1px solid var(--line)}
+
+.proj-desc{
+  font-size:12px;color:var(--muted);
+  line-height:1.6;flex:1;margin-bottom:16px;
+}
+.proj-stack{
+  display:flex;flex-wrap:wrap;gap:4px;margin-bottom:14px;
+}
+.ptag{
+  font-family:var(--mono);font-size:10px;
+  color:var(--muted);background:var(--bg);
+  border:1px solid var(--line2);border-radius:3px;
+  padding:2px 6px;letter-spacing:.02em;
+}
+.ptag.hi{
+  color:var(--body);border-color:var(--line3);
+  background:var(--bg2);
+}
+.proj-links{display:flex;gap:10px}
+.plink{
+  font-family:var(--mono);font-size:11px;
+  color:var(--muted);text-decoration:none;
+  display:inline-flex;align-items:center;gap:3px;
+  transition:color .15s;
+}
+.plink:hover{color:var(--head)}
+.plink.p{color:var(--blue)}
+.plink.p:hover{color:#60a5fa}
+
+/* ── Skills ─────────────────────────────────────── */
+.skills-layout{
+  display:grid;
+  grid-template-columns:160px 1fr;
+  gap:40px;
+}
+.skill-groups{
+  display:flex;flex-direction:column;gap:24px;
+}
+.skill-group{}
+.sg-label{
+  font-family:var(--mono);font-size:10px;
+  color:var(--muted);letter-spacing:.08em;text-transform:uppercase;
+  margin-bottom:10px;
+}
+.sg-tags{display:flex;flex-wrap:wrap;gap:6px}
+.stag{
+  font-family:var(--mono);font-size:12px;
+  color:var(--sub);
+  border:1px solid var(--line2);border-radius:3px;
+  padding:4px 10px;
+  transition:all .15s;cursor:default;
+}
+.stag:hover{color:var(--head);border-color:var(--line3);background:var(--bg2)}
+.stag.p{color:var(--body);border-color:var(--line3);background:var(--bg1)}
+.stag.x{color:var(--muted);border-color:var(--line);font-style:italic}
+
+/* ── Contact ────────────────────────────────────── */
+#contact{border-bottom:none}
+.contact-inner{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;align-items:start;
+}
+.contact-headline{
+  font-family:var(--serif);
+  font-size:clamp(36px,5vw,60px);
+  font-weight:400;color:var(--head);
+  line-height:1;letter-spacing:-.5px;
+  margin-bottom:20px;
+}
+.contact-headline em{font-style:italic;color:var(--sub)}
+.contact-sub{
+  font-size:13px;color:var(--muted);
+  line-height:1.7;margin-bottom:28px;
+}
+.contact-sub strong{color:var(--sub);font-weight:400}
+.contact-list{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.citem{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;background:var(--bg1);
+  text-decoration:none;color:inherit;
+  transition:background .15s;
+}
+.citem:hover{background:var(--bg2)}
+.citem-icon{
+  font-family:var(--mono);font-size:12px;
+  color:var(--muted);width:16px;text-align:center;flex-shrink:0;
+}
+.citem-text{}
+.citem-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.citem-val{font-size:12px;color:var(--sub)}
+.citem-arr{margin-left:auto;color:var(--line3);font-size:13px;transition:all .15s}
+.citem:hover .citem-arr{color:var(--sub);transform:translateX(2px)}
+
+/* ── Footer ─────────────────────────────────────── */
+footer{
+  padding:24px 0;
+  border-top:1px solid var(--line);
+}
+footer .wrap{
+  display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:8px;
+}
+.foot-l{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.foot-r{font-family:var(--mono);font-size:11px;color:var(--muted)}
+
+/* ── Reveal animations ──────────────────────────── */
+.r{
+  opacity:0;transform:translateY(16px);
+  transition:opacity .5s ease,transform .5s ease;
+}
+.r.v{opacity:1;transform:translateY(0)}
+
+/* ── Responsive ─────────────────────────────────── */
+@media(max-width:720px){
+  .hero-inner{grid-template-columns:1fr;gap:40px}
+  .hero-stats{flex-direction:row;flex-wrap:wrap}
+  .sec-header,.exp-item,.skills-layout{grid-template-columns:1fr;gap:12px}
+  .contact-inner{grid-template-columns:1fr;gap:40px}
+  .nav-links,.nav-loc{display:none}
+  .sec-header{display:block}
+  .sec-label{margin-bottom:8px}
+}
+
+/* ── Utilities ──────────────────────────────────── */
+::selection{background:rgba(248,248,248,.12);color:var(--white)}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--line3);border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- ── Nav ───────────────────────────────────────── -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#hero">aman.sharma<span>/</span></a>
+    <ul class="nav-links">
+      <li><a href="#experience">Work</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Stack</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <span class="nav-loc">Delhi · IST</span>
+  </div>
+</nav>
+
+<!-- ── Hero ──────────────────────────────────────── -->
+<section id="hero">
+  <div class="wrap">
+    <div class="hero-inner">
+
+      <div>
+        <div class="hero-label">Backend Engineer · SDE-2</div>
+        <h1 class="hero-name">Aman<br/><em>Sharma</em></h1>
+        <p class="hero-role">
+          <strong>Node.js · Golang · Microservices</strong><br/>
+          Distributed Systems · Payments · Multi-tenant SaaS
+        </p>
+        <p class="hero-bio">
+          I build backend systems that handle real load — cut API latency
+          from <strong>2.1s to 400ms</strong>, processed <strong>5K+ payments with
+          zero duplicates</strong>, and architected SaaS serving
+          <strong>100+ organizations</strong>. 3+ years shipping production backend
+          in Node.js and TypeScript, expanding into Golang.
+        </p>
+        <div class="hero-actions">
+          <a href="mailto:amansh2786@gmail.com" class="btn btn-primary">Get in touch</a>
+          <a href="https://github.com/amanshr72" target="_blank" rel="noopener" class="btn btn-ghost">GitHub ↗</a>
+          <a href="https://linkedin.com/in/aman-sharma-3524a91a6" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn ↗</a>
+        </div>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hstat">
+          <div class="hstat-num">−60%</div>
+          <div class="hstat-label">API latency · 2.1s → 400ms</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-num">0</div>
+          <div class="hstat-label">Duplicate charges · 5K+ txns</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-num">1M+</div>
+          <div class="hstat-label">Monthly CDN requests served</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-num">100+</div>
+          <div class="hstat-label">Organizations on SaaS LMS</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Experience ─────────────────────────────────── -->
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-header r">
+      <span class="sec-label">Experience</span>
+      <h2 class="sec-title">Where I've <em>worked</em></h2>
+    </div>
+
+    <!-- VJV -->
+    <div class="exp-item r">
+      <div class="exp-meta">
+        <div class="exp-dates">Mar 2025<br/>Present</div>
+        <div class="exp-co">VJV IT Solutions</div>
+        <span class="exp-badge">Remote</span>
+      </div>
+      <div class="exp-body">
+        <div class="exp-role">Software Developer</div>
+        <ul class="exp-points">
+          <li>Architected multi-tenant SaaS LMS for 100+ organizations — tenant isolation, subdomain routing, RBAC, full subscription lifecycle.</li>
+          <li>Built JivaSync matchmaking backend — profile management, multi-criteria search with composite indexing (−50% query time), event-driven notifications.</li>
+          <li>Engineered payment infrastructure across Stripe, PayPal, Razorpay — auto-renewals, idempotent webhook processing, parent-child subscription hierarchy. 5K+ transactions, zero duplicate charges.</li>
+          <li>DB schema optimization & indexing → query latency −35%, throughput +60% on 100K+ record datasets.</li>
+          <li>Redis caching + BullMQ async queues → 10K+ bulk imports without blocking live traffic.</li>
+          <li>AWS S3 + CloudFront CDN → asset load time −50%, 1M+ monthly requests served reliably.</li>
+        </ul>
+        <div class="exp-links">
+          <a href="https://yuvaquest.com" target="_blank" rel="noopener" class="elink">Yuva Quest</a>
+          <a href="https://jivasync.com" target="_blank" rel="noopener" class="elink">JivaSync</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- SET -->
+    <div class="exp-item r">
+      <div class="exp-meta">
+        <div class="exp-dates">Aug 2024<br/>Feb 2025</div>
+        <div class="exp-co">Shunya Ekai Tech</div>
+        <span class="exp-badge">Full-time</span>
+      </div>
+      <div class="exp-body">
+        <div class="exp-role">Software Developer</div>
+        <ul class="exp-points">
+          <li>Migrated Plus-X from Laravel monolith → Node.js microservices. API latency: 2.1s → 400ms (−60%).</li>
+          <li>Versioned REST APIs with auth, validation, RBAC, pagination — serving external clients at 99% uptime.</li>
+          <li>Stripe auto-debit + webhook-driven state machine — zero missed transitions in production.</li>
+          <li>Admin panel for 10K+ daily ops with granular RBAC.</li>
+          <li>MySQL throughput +40% via query refactoring, indexing, N+1 elimination.</li>
+        </ul>
+        <div class="exp-links">
+          <a href="https://ridezapp.in" target="_blank" rel="noopener" class="elink">Ridez</a>
+          <a href="https://plusx.in" target="_blank" rel="noopener" class="elink">PlusX</a>
+          <a href="https://ipfstartuphub.com" target="_blank" rel="noopener" class="elink">IPF Startup Hub</a>
+          <a href="https://ipfyuva.in" target="_blank" rel="noopener" class="elink">IPF Yuva</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Market 99 -->
+    <div class="exp-item r">
+      <div class="exp-meta">
+        <div class="exp-dates">Feb 2024<br/>Jul 2024</div>
+        <div class="exp-co">Market 99</div>
+        <span class="exp-badge">Full-time</span>
+      </div>
+      <div class="exp-body">
+        <div class="exp-role">Backend Engineer</div>
+        <ul class="exp-points">
+          <li>Backend for internal Ticket Management System &amp; WMS — internal tooling, NDA.</li>
+          <li>REST APIs for inventory, order tracking, user roles, reporting.</li>
+          <li>Replaced polling with WebSocket for real-time task board sync → latency &lt;200ms.</li>
+          <li>Third-party logistics, notification &amp; auth API integrations with async workflows.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Radiant -->
+    <div class="exp-item r">
+      <div class="exp-meta">
+        <div class="exp-dates">Nov 2022<br/>Feb 2024</div>
+        <div class="exp-co">Radiant Infonet</div>
+        <span class="exp-badge">Full-time</span>
+      </div>
+      <div class="exp-body">
+        <div class="exp-role">Backend Engineer</div>
+        <ul class="exp-points">
+          <li>Built Navbazar — B2B e-commerce platform, multi-vendor workflows, 100+ high-volume SKUs.</li>
+          <li>Auth, product catalog, order lifecycle, payments, dashboards end-to-end.</li>
+          <li>DB performance via normalization, compound indexing, N+1 elimination.</li>
+        </ul>
+        <div class="exp-links">
+          <a href="https://navbazar.in" target="_blank" rel="noopener" class="elink">Navbazar</a>
+          <a href="https://nefarmhub.com" target="_blank" rel="noopener" class="elink">NeFarmHub</a>
+          <a href="https://skillassessment.in" target="_blank" rel="noopener" class="elink">SkillAssessment</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Projects ───────────────────────────────────── -->
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-header r">
+      <span class="sec-label">Projects</span>
+      <h2 class="sec-title">Things I've <em>built</em></h2>
+    </div>
+
+    <!-- Professional -->
+    <div class="proj-subsection r">
+      <div class="proj-sublabel">Professional · Client &amp; Company Work</div>
+      <div class="proj-grid">
+
+        <div class="proj-card">
+          <div class="proj-card-top">
+            <div class="proj-name">Yuva Quest — Multi-tenant LMS</div>
+            <span class="proj-status ps-live">Live</span>
+          </div>
+          <div class="proj-desc">SaaS LMS for 100+ organizations. Tenant isolation, subdomain routing, subscription lifecycle, RBAC, multi-language, CloudFront-S3 delivery.</div>
+          <div class="proj-stack">
+            <span class="ptag hi">Node.js</span><span class="ptag hi">TypeScript</span>
+            <span class="ptag">MySQL</span><span class="ptag">Redis</span><span class="ptag">AWS S3</span><span class="ptag">CloudFront</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://yuvaquest.com" target="_blank" class="plink p">↗ Live site</a>
+          </div>
+        </div>
+
+        <div class="proj-card">
+          <div class="proj-card-top">
+            <div class="proj-name">JivaSync — Matchmaking Platform</div>
+            <span class="proj-status ps-live">Live</span>
+          </div>
+          <div class="proj-desc">Profile management, multi-criteria search (composite indexing, −50% query time), event-driven notifications, WebSocket real-time updates.</div>
+          <div class="proj-stack">
+            <span class="ptag hi">Node.js</span>
+            <span class="ptag">MongoDB</span><span class="ptag">Redis</span><span class="ptag">WebSocket</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://jivasync.com" target="_blank" class="plink p">↗ Live site</a>
+          </div>
+        </div>
+
+        <div class="proj-card">
+          <div class="proj-card-top">
+            <div class="proj-name">Plus-X Migration</div>
+            <span class="proj-status ps-ship">Shipped</span>
+          </div>
+          <div class="proj-desc">Laravel monolith → Node.js microservices. API latency: 2.1s → 400ms. Versioned APIs, Stripe payments, 99% uptime for external clients.</div>
+          <div class="proj-stack">
+            <span class="ptag hi">Node.js</span><span class="ptag hi">Microservices</span>
+            <span class="ptag">Stripe</span><span class="ptag">MySQL</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://plusx.in" target="_blank" class="plink p">↗ Live site</a>
+          </div>
+        </div>
+
+        <div class="proj-card">
+          <div class="proj-card-top">
+            <div class="proj-name">Navbazar — B2B E-Commerce</div>
+            <span class="proj-status ps-live">Live</span>
+          </div>
+          <div class="proj-desc">Multi-vendor B2B platform, 100+ high-volume SKUs, full order lifecycle, payments, dashboards, advanced search &amp; filtering.</div>
+          <div class="proj-stack">
+            <span class="ptag">PHP</span><span class="ptag">Laravel</span>
+            <span class="ptag">MySQL</span><span class="ptag">Multi-vendor</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://navbazar.in" target="_blank" class="plink p">↗ Live site</a>
+            <a href="https://nefarmhub.com" target="_blank" class="plink">NeFarmHub ↗</a>
+          </div>
+        </div>
+
+        <div class="proj-card">
+          <div class="proj-card-top">
+            <div class="proj-name">IPF Ecosystem</div>
+            <span class="proj-status ps-live">Live</span>
+          </div>
+          <div class="proj-desc">Two platforms — IPF Startup Hub and IPF Yuva. REST APIs, RBAC, pagination, external client integrations.</div>
+          <div class="proj-stack">
+            <span class="ptag hi">Node.js</span><span class="ptag">REST API</span><span class="ptag">RBAC</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://ipfstartuphub.com" target="_blank" class="plink p">↗ Startup Hub</a>
+            <a href="https://ipfyuva.in" target="_blank" class="plink">IPF Yuva ↗</a>
+          </div>
+        </div>
+
+        <div class="proj-card">
+          <div class="proj-card-top">
+            <div class="proj-name">Ridez · SkillAssessment</div>
+            <span class="proj-status ps-live">Live</span>
+          </div>
+          <div class="proj-desc">Ridez — ride platform backend. SkillAssessment — assessment portal with advanced filtering and reporting.</div>
+          <div class="proj-stack">
+            <span class="ptag hi">Node.js</span><span class="ptag">MySQL</span><span class="ptag">REST API</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://ridezapp.in" target="_blank" class="plink p">↗ Ridez</a>
+            <a href="https://skillassessment.in" target="_blank" class="plink">SkillAssessment ↗</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Personal / Side -->
+    <div class="proj-subsection r" style="margin-top:32px">
+      <div class="proj-sublabel">Personal · Side Projects &amp; Architecture</div>
+      <div class="proj-grid">
+
+        <div class="proj-card">
+          <div class="proj-card-top">
+            <div class="proj-name">Auth Service</div>
+            <span class="proj-status ps-ship">Shipped</span>
+          </div>
+          <div class="proj-desc">JWT access/refresh token rotation, RBAC middleware, rate limiting, session management. Built in both Node.js and Golang.</div>
+          <div class="proj-stack">
+            <span class="ptag hi">Node.js</span><span class="ptag hi">Golang</span>
+            <span class="ptag">JWT</span><span class="ptag">Redis</span><span class="ptag">RBAC</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/amanshr72" target="_blank" class="plink p">↗ GitHub</a>
+          </div>
+        </div>
+
+        <div class="proj-card">
+          <div class="proj-card-top">
+            <div class="proj-name">Payment Service</div>
+            <span class="proj-status ps-ship">Shipped</span>
+          </div>
+          <div class="proj-desc">Idempotent payment engine — Stripe auto-debit, webhook state machine, failure recovery, parent-child subscription hierarchy.</div>
+          <div class="proj-stack">
+            <span class="ptag hi">Node.js</span>
+            <span class="ptag">Stripe</span><span class="ptag">BullMQ</span><span class="ptag">Webhooks</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/amanshr72" target="_blank" class="plink p">↗ GitHub</a>
+          </div>
+        </div>
+
+        <div class="proj-card">
+          <div class="proj-card-top">
+            <div class="proj-name">Go REST Microservice</div>
+            <span class="proj-status ps-wip">Expanding</span>
+          </div>
+          <div class="proj-desc">High-performance REST service in Golang — JWT middleware, PostgreSQL, Docker deployment, structured logging, clean architecture.</div>
+          <div class="proj-stack">
+            <span class="ptag hi">Golang</span>
+            <span class="ptag">PostgreSQL</span><span class="ptag">Docker</span><span class="ptag">REST</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/amanshr72" target="_blank" class="plink p">↗ GitHub</a>
+          </div>
+        </div>
+
+        <!-- ── ADD PERSONAL PROJECT ──────────────────────
+        <div class="proj-card">
+          <div class="proj-card-top">
+            <div class="proj-name">Project Name</div>
+            <span class="proj-status ps-ship">Shipped</span>
+          </div>
+          <div class="proj-desc">What it does. Be specific about the problem it solves.</div>
+          <div class="proj-stack">
+            <span class="ptag hi">Node.js</span><span class="ptag">Redis</span>
+          </div>
+          <div class="proj-links">
+            <a href="#" target="_blank" class="plink p">↗ GitHub</a>
+          </div>
+        </div>
+        ─────────────────────────────────────────────── -->
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Skills ────────────────────────────────────── -->
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-header r">
+      <span class="sec-label">Stack</span>
+      <h2 class="sec-title">How I <em>work</em></h2>
+    </div>
+    <div class="skills-layout r">
+      <div></div><!-- offset col -->
+      <div class="skill-groups">
+
+        <div class="skill-group">
+          <div class="sg-label">Languages</div>
+          <div class="sg-tags">
+            <span class="stag p">JavaScript</span>
+            <span class="stag p">TypeScript</span>
+            <span class="stag p">Golang</span>
+            <span class="stag">PHP</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="sg-label">Backend</div>
+          <div class="sg-tags">
+            <span class="stag p">Node.js</span>
+            <span class="stag p">Express.js</span>
+            <span class="stag">REST APIs</span>
+            <span class="stag">BullMQ</span>
+            <span class="stag">RabbitMQ</span>
+            <span class="stag">WebSocket</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="sg-label">Architecture</div>
+          <div class="sg-tags">
+            <span class="stag p">Microservices</span>
+            <span class="stag p">Event-Driven</span>
+            <span class="stag">Multi-tenant SaaS</span>
+            <span class="stag">Caching</span>
+            <span class="stag">Rate Limiting</span>
+            <span class="stag">LLD / HLD</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="sg-label">Databases</div>
+          <div class="sg-tags">
+            <span class="stag p">MySQL</span>
+            <span class="stag p">Redis</span>
+            <span class="stag p">MongoDB</span>
+            <span class="stag">PostgreSQL</span>
+            <span class="stag">Schema Design</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="sg-label">Cloud &amp; DevOps</div>
+          <div class="sg-tags">
+            <span class="stag">AWS EC2</span>
+            <span class="stag">S3 / CloudFront</span>
+            <span class="stag">Docker</span>
+            <span class="stag">CI/CD</span>
+            <span class="stag">Nginx</span>
+            <span class="stag">Linux</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="sg-label">Expanding into</div>
+          <div class="sg-tags">
+            <span class="stag x">Kubernetes</span>
+            <span class="stag x">Kafka</span>
+            <span class="stag x">System Design (HLD)</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Education ──────────────────────────────────── -->
+<section id="education">
+  <div class="wrap">
+    <div class="sec-header r">
+      <span class="sec-label">Education</span>
+      <h2 class="sec-title"><em>Academic</em> background</h2>
+    </div>
+    <div class="r">
+      <div class="exp-item" style="padding-top:0;border-top:none">
+        <div class="exp-meta">
+          <div class="exp-dates">2025 — 2027</div>
+          <div class="exp-co">SMU</div>
+          <span class="exp-badge">Pursuing</span>
+        </div>
+        <div class="exp-body">
+          <div class="exp-role">MCA — Sikkim Manipal University</div>
+        </div>
+      </div>
+      <div class="exp-item">
+        <div class="exp-meta">
+          <div class="exp-dates">2021 — 2024</div>
+          <div class="exp-co">Amity</div>
+        </div>
+        <div class="exp-body">
+          <div class="exp-role">BCA — Amity University</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Contact ───────────────────────────────────── -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-inner">
+      <div class="r">
+        <h2 class="contact-headline">Let's<br/><em>talk.</em></h2>
+        <p class="contact-sub">
+          Backend engineer looking for <strong>SDE-2 roles</strong> in Node.js, Golang,
+          and distributed systems.<br/>
+          Delhi, India — <strong>open to remote globally.</strong>
+        </p>
+        <a href="mailto:amansh2786@gmail.com" class="btn btn-primary">amansh2786@gmail.com</a>
+      </div>
+      <div class="contact-list r">
+        <a href="mailto:amansh2786@gmail.com" class="citem">
+          <span class="citem-icon">✉</span>
+          <div class="citem-text">
+            <div class="citem-label">Email</div>
+            <div class="citem-val">amansh2786@gmail.com</div>
+          </div>
+          <span class="citem-arr">→</span>
+        </a>
+        <a href="https://github.com/amanshr72" target="_blank" rel="noopener" class="citem">
+          <span class="citem-icon">⌥</span>
+          <div class="citem-text">
+            <div class="citem-label">GitHub</div>
+            <div class="citem-val">github.com/amanshr72</div>
+          </div>
+          <span class="citem-arr">→</span>
+        </a>
+        <a href="https://linkedin.com/in/aman-sharma-3524a91a6" target="_blank" rel="noopener" class="citem">
+          <span class="citem-icon" style="font-size:10px;font-weight:600">in</span>
+          <div class="citem-text">
+            <div class="citem-label">LinkedIn</div>
+            <div class="citem-val">aman-sharma-3524a91a6</div>
+          </div>
+          <span class="citem-arr">→</span>
+        </a>
+        <a href="tel:+917772022415" class="citem">
+          <span class="citem-icon">☏</span>
+          <div class="citem-text">
+            <div class="citem-label">Phone · IST (UTC+5:30)</div>
+            <div class="citem-val">+91-7772022415</div>
+          </div>
+          <span class="citem-arr">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ────────────────────────────────────── -->
+<footer>
+  <div class="wrap">
+    <span class="foot-l">© 2025 Aman Sharma · Delhi, India</span>
+    <span class="foot-r">Static HTML · GitHub Pages</span>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const siblings = [...(e.target.parentElement?.querySelectorAll('.r') || [])];
+      const i = siblings.indexOf(e.target);
+      setTimeout(() => e.target.classList.add('v'), i * 60);
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.06, rootMargin: '0px 0px -20px 0px' });
+  document.querySelectorAll('.r').forEach(el => io.observe(el));
+
+  // Active nav
+  const secs = document.querySelectorAll('section[id]');
+  const navAs = document.querySelectorAll('.nav-links a');
+  const onScroll = () => {
+    let cur = '';
+    secs.forEach(s => { if (scrollY >= s.offsetTop - 80) cur = s.id; });
+    navAs.forEach(a => {
+      a.style.color = a.getAttribute('href') === `#${cur}` ? 'var(--head)' : '';
+      a.style.background = a.getAttribute('href') === `#${cur}` ? 'var(--bg2)' : '';
+    });
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+</script>
+</body>
+</html>
